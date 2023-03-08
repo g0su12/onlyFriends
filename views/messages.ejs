@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Messages</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/index.css' />
+    <link rel="stylesheet" href='/stylesheets/messages.css' />
+  </head>
+  <body>
+    <div class="main"></div>
+    <div class="container">
+      <div class="nav-bar">
+        <h3 class="title"><a href="/">Only Friends</a></h3>
+        <ul class="list">
+          <% if(user) { %>
+            <li>Hi, <%= user.username %> </li>
+            <li class="logout"><button></button><a href="/logout">Log out</a></button></li>
+          <% } %>
+        </ul>
+      </div>
+      <div class="content">
+        Here is your messagesss!!!!!
+      </div>
+    </div>  
+  </body>
+</html>
