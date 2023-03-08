@@ -1,11 +1,45 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Only Friends</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/index.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <div class="main"></div>
+    <div class="container">
+      <div class="nav-bar">
+        <h3 class="title">Only Friends</h3>
+        <ul class="list">
+          <ul class="list">
+            <% if(user){ %>
+              <li class="hello">Hi, <%= user.username %> </li>
+              <li>|</li>
+              <li class="logout"><button></button><a href="/logout">Log out</a></button></li>
+            <% } else{ %>
+              <li class="item">🅧</li>
+              <li class="item">🅧</li>
+              <li class="item">🅧</li>
+            <% } %>
+          </ul>
+        </ul>
+      </div>
+      <div class="content">
+        <div>
+          <h2 class="header">WRITE FOR YOUR NEXT GENERATION</h2>
+          <p class="description">You wanna say something? Storage your message by our service, just click on the button below to start your dream</p>
+          <div class="wrapper">
+            <div class="link_wrapper">
+              <a class="text-content" href="/messages">Join with us</a>
+              <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 268.832 268.832">
+                  <path d="M265.17 125.577l-80-80c-4.88-4.88-12.796-4.88-17.677 0-4.882 4.882-4.882 12.796 0 17.678l58.66 58.66H12.5c-6.903 0-12.5 5.598-12.5 12.5 0 6.903 5.597 12.5 12.5 12.5h213.654l-58.66 58.662c-4.88 4.882-4.88 12.796 0 17.678 2.44 2.44 5.64 3.66 8.84 3.66s6.398-1.22 8.84-3.66l79.997-80c4.883-4.882 4.883-12.796 0-17.678z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  
   </body>
 </html>
