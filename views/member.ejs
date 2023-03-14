@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Become a member</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/index.css' />
+    <link rel="stylesheet" href='/stylesheets/form.css' />
+  </head>
+  <body>
+    <div class="main"></div>
+    <div class="container">
+      <div class="nav-bar">
+        <h3 class="title"><a href="/">Only Friends</a></h3>
+        <ul class="list">
+          <li class="hello">Hi, <%= user.username %> </li> 
+          <li>|</li>
+          <li class="logout"><button></button><a href="/logout">Log out</a></button></li>
+        </ul>
+      </div>
+      <div class="content">
+        <div>
+          <h2 class="header">Become a member</h2>
+          <p class="description">Type the password into the box below</p>
+          <div class="form">
+            <form method="POST" action="/member/verify">
+              <div class="input-container ic2">
+                <input id="password" class="input" type="password" name="memberPassword" placeholder=" " />
+                <div class="cut"></div>
+                <label for="password" class="placeholder">password</label>
+              </div>
+              <p class="error"><%= error %></p>
+              <button type="submit" class="submit">Verify</button>
+            </form> 
+            <a href="/admin/verify"><button class="back">Want to be an Admin, Click here!</button></a>
+          </div>
+        </div>
+      </div>
+    </div>  
+  </body>
+</html>

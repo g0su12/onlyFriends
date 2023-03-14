@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Only Friends</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/index.css' />
+  </head>
+  <body>
+    <div class="main"></div>
+    <div class="container">
+      <div class="nav-bar">
+        <h3 class="title">Only Friends</h3>
+            <ul class="list">
+                <% if(user){ %>
+                    <li class="item hello">Hi, <%= user.username %></li>
+                    <li><a href="/dashboard/users">Users</a></li> 
+                    <li><a href="/dashboard/messages">Messages</a></li> 
+                    <li>|</li>
+                    <li class="item logout"><button></button><a href="/logout">Log out</a></button></li>
+                <% } %>
+            </ul>
+      </div>
+      <div class="content">
+        <div>
+          
+        </div>
+      </div>
+    </div>  
+  </body>
+</html>

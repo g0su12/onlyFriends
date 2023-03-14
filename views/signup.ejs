@@ -4,7 +4,7 @@
     <title>Sign Up</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/index.css' />
-    <link rel='stylesheet' href='/stylesheets/login_signup.css' />
+    <link rel='stylesheet' href='/stylesheets/form.css' />
   </head>
   <body>
     <div class="main"></div>
@@ -20,26 +20,27 @@
       <div class="content">
         <div class="form">
           <form method="POST" action="/signup">
-              <div class="input-container ic1">
-                <input id="username" class="input" type="text" name="username" placeholder=" " />
-                <div class="cut"></div>
-                <label for="username" class="placeholder">username</label>
-              </div>
-              <div class="input-container ic2">
-                <input id="password" class="input" type="password" name="password" placeholder=" " />
-                <div class="cut"></div>
-                <label for="password" class="placeholder">password</label>
-              </div>
-              <div class="input-container ic2">
-                <input id="confirmPassword" class="input" type="password" name="confirmPassword" placeholder=" " />
-                <div class="cut"></div>
-                <label for="password" class="placeholder">confirm password</label>
-              </div>
-              <p class="error"><%= error %></p>
-              <button type="submit" class="submit">Sign up</button>
-            </form> 
-            <a href="/login"><button class="back">Already have an account? Login</button></a>
-          </div>
+            <h3>Sign up</h3>
+            <div class="input-container ic1">
+              <input id="username" class="input" type="text" name="username" placeholder=" " />
+              <div class="cut"></div>
+              <label for="username" class="placeholder">username</label>
+            </div>
+            <div class="input-container ic2">
+              <input id="password" class="input" type="password" name="password" placeholder=" " />
+              <div class="cut"></div>
+              <label for="password" class="placeholder">password</label>
+            </div>
+            <div class="input-container ic2">
+              <input id="confirmPassword" class="input" type="password" name="confirmPassword" placeholder=" " />
+              <div class="cut"></div>
+              <label for="password" class="placeholder">confirm password</label>
+            </div>
+            <p class="error"><%= error %></p>
+            <button type="submit" class="submit">Sign up</button>
+          </form> 
+          <a href="/login"><button class="back">Already have an account? Login</button></a>
+        </div>
       </div>
     </div>  
   </body>

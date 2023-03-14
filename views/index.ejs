@@ -11,17 +11,25 @@
       <div class="nav-bar">
         <h3 class="title">Only Friends</h3>
         <ul class="list">
-          <ul class="list">
-            <% if(user){ %>
-              <li class="hello">Hi, <%= user.username %> </li>
-              <li>|</li>
+          <% if(user){ %>
+              <li class="hello">Hi, <%= user.username %></li>
+			  <% if(user.admin){ %> 
+				<span class="item admin">(Admin)</span>
+				<a class="dashboard" href="/admin/dashboard">Dashboard</a>
+				<% }else if(user.member){ %>
+				<span class="item">(Member)</span>
+				<% } %> 
+              <button class="item btn-message" onclick="showBoard()">Create a Message</button>
+              <div id="snackbar">
+                test
+              </div>
+              <li class="item">|</li>
               <li class="logout"><button></button><a href="/logout">Log out</a></button></li>
-            <% } else{ %>
+          <% } else{ %>
               <li class="item">🅧</li>
               <li class="item">🅧</li>
               <li class="item">🅧</li>
-            <% } %>
-          </ul>
+          <% } %>
         </ul>
       </div>
       <div class="content">
@@ -41,5 +49,12 @@
         </div>
       </div>
     </div>  
+    <script>
+      function showBoard() {
+        var x = document.getElementById("snackbar");
+        x.className = "showError";
+        setTimeout(function(){ x.className = x.className.replace("showError", ""); }, 3000);  
+      }
+    </script>
   </body>
 </html>

@@ -12,9 +12,27 @@
       <div class="nav-bar">
         <h3 class="title"><a href="/">Only Friends</a></h3>
         <ul class="list">
-          <% if(user) { %>
-            <li>Hi, <%= user.username %> </li>
-            <li class="logout"><button></button><a href="/logout">Log out</a></button></li>
+          <% if(user){ %>
+            <li class="item hello">Hi, <%= user.username %></li>
+            <button class="item btn-message" onclick="showBoard()">Create a Message</button>
+            <div id="snackbar">
+              test
+            </div>
+            <% if(user.member || user.member){ %>
+            <p class="item role"> <%= user.admin && user.member ? "Roles: " : "Role: " %> </p>
+            <% if(user.admin){ %> 
+                <span class="item">Admin </span>
+                <a href="/admin/dashboard">Dashboard</a>
+            <% }else if(user.member){ %>
+                <span class="item">Member </span>
+            <% } %>
+            <% } %>  
+            <li class="item">|</li>
+            <li class="item logout"><button></button><a href="/logout">Log out</a></button></li>
+          <% } else{ %>
+              <li class="item">🅧</li>
+              <li class="item">🅧</li>
+              <li class="item">🅧</li>
           <% } %>
         </ul>
       </div>

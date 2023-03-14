@@ -98,6 +98,20 @@ const logOut = (req, res, next) => {
   });
 }
 
+const isMember = (req, res, next) => {
+    if(req.user.member) {
+        return next();
+    }
+    res.redirect('/login');
+}
+
+const isAdmin = (req, res, next) => {
+    if(req.user.admin) {
+        return next();
+    }
+    res.redirect('/login');
+}
+
 module.exports = {
     loginGet,
     loginPost,
@@ -106,4 +120,6 @@ module.exports = {
     isLoggedIn,
     isLogged,
     logOut,
+    isMember,
+    isAdmin
 }
