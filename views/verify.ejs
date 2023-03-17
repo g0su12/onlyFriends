@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Verify user</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/index.css' />
+    <link rel="stylesheet" href='/stylesheets/verify.css' />
+  </head>
+  <body>
+    <div class="main"></div>
+    <div class="container">
+      <div class="nav-bar">
+        <h3 class="title"><a href="/">Only Friends</a></h3>
+        <ul class="list">
+          <li class="hello item">Hi, <%= user.username %></li>
+          <li>|</li>
+          <li class="logout item"><button></button><a href="/logout">Log out</a></button></li>
+        </ul>
+      </div>
+      <div>
+        <ul class="content">
+            <li>
+                <div id="wrapper">
+                    <a href="/verify/admin" class="my-super-cool-btn">
+                      <div class="dots-container">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                      </div>
+                      <span>
+                        <h3 class="title">
+                            Become an Admin
+                        </h3>
+                    </span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div id="wrapper">
+                    <a href="/verify/member" class="my-super-cool-btn">
+                        <div class="dots-container">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                        <span>
+                            <h3 class="title">
+                                Become a Member
+                            </h3>
+                        </span>
+                    </a>
+                </div>
+            </li>
+        </ul>
+      </div>
+    </div>  
+  </body>
+</html>

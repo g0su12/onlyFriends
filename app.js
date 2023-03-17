@@ -1,5 +1,6 @@
+/* eslint-disable consistent-return */
+/* eslint-disable import/order */
 require('dotenv').config();
-const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -7,6 +8,7 @@ const logger = require('morgan');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 
@@ -14,18 +16,19 @@ const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
 const signUpRouter = require('./routes/signup');
 const logOutRouter = require('./routes/logout');
-const memberRouter = require('./routes/member');
+const verifyRouter = require('./routes/verify');
 const adminRouter = require('./routes/admin');
 const messagesRouter = require('./routes/messages');
+
 const app = express();
 
-//database connection
+// database connection
 const mongoose = require('mongoose');
 // mongoose.set('strictQuery', true);
-const URI = process.env.URI;
+const { URI } = process.env;
 mongoose.connect(URI, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
-db.on("error", console.error.bind(console, "MongoDB connection error"));
+db.on('error', console.error.bind(console, 'MongoDB connection error'));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -36,28 +39,27 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Passport configure 
+// Passport configure
 const User = require('./models/user.model');
 const bcrypt = require('bcryptjs');
-const { logOut } = require('./controller/auth.controller');
 
 passport.use(
   new LocalStrategy((username, password, done) => {
     User.findOne({ username: username.trim() }, (err, user) => {
-      if (err) return done(err)
+      if (err) return done(err);
 
       if (!user) {
         return done(null, false, { message: 'Incorrect username' });
       }
-      bcrypt.compare(password, user.password, (err, res) => {
+      bcrypt.compare(password, user.password, (_err, res) => {
         if (res) {
           return done(null, user);
         }
         return done(null, false, { message: 'Incorrect password' });
-      })
-    })
-  }));
-
+      });
+    });
+  }),
+);
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -66,7 +68,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
   User.findById(id, (err, user) => {
     done(err, user);
-  })
+  });
 });
 
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
@@ -84,16 +86,16 @@ app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/signup', signUpRouter);
 app.use('/logout', logOutRouter);
-app.use('/member', memberRouter);
+app.use('/verify', verifyRouter);
 app.use('/admin', adminRouter);
 app.use('/messages', messagesRouter);
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  res.redirect("/");
+app.use((req, res) => {
+  res.redirect('/');
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

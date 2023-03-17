@@ -1,28 +1,45 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Only Friends</title>
+    <title>Dashboard</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/index.css' />
+    <link rel="stylesheet" href="/stylesheets/dashboard.css" />
   </head>
   <body>
     <div class="main"></div>
     <div class="container">
       <div class="nav-bar">
-        <h3 class="title">Only Friends</h3>
-            <ul class="list">
-                <% if(user){ %>
-                    <li class="item hello">Hi, <%= user.username %></li>
-                    <li><a href="/dashboard/users">Users</a></li> 
-                    <li><a href="/dashboard/messages">Messages</a></li> 
-                    <li>|</li>
-                    <li class="item logout"><button></button><a href="/logout">Log out</a></button></li>
-                <% } %>
-            </ul>
+        <h3 class="title"><a href="/">Only Friends</a></h3>
+          <ul class="list">
+            <% if(user){ %>
+              <li class="item"><a href="/admin/dashboard/users">Users</a></li> 
+              <li class="item"><a href="/admin/dashboard/messages">Messages</a></li> 
+              <li>|</li>
+              <li class="item logout"><button></button><a href="/logout">Log out</a></button></li>
+            <% } %>
+          </ul>
       </div>
       <div class="content">
         <div>
-          
+          <table >
+              <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Join date</th>
+                <th>Role</th>
+                <th>Profile</th>
+                <th>Delete</th>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>Jean</td>
+                <td>leBon</td>
+                <td>1368</td>
+                <td>18 Nov 1962</td>
+                <td>5000$</td>
+              </tr>
+          </table>
         </div>
       </div>
     </div>  

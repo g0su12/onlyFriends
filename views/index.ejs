@@ -4,41 +4,73 @@
     <title>Only Friends</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/index.css' />
+    <link rel="stylesheet" href='/stylesheets/form.css' />
   </head>
   <body>
+    <script>
+      function showBoard() {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+      }
+    </script>
     <div class="main"></div>
     <div class="container">
       <div class="nav-bar">
         <h3 class="title">Only Friends</h3>
         <ul class="list">
           <% if(user){ %>
-              <li class="hello">Hi, <%= user.username %></li>
-			  <% if(user.admin){ %> 
-				<span class="item admin">(Admin)</span>
-				<a class="dashboard" href="/admin/dashboard">Dashboard</a>
-				<% }else if(user.member){ %>
-				<span class="item">(Member)</span>
-				<% } %> 
+            <li class="hello item">Hi, <%= user.username %></li>
+            <% if(user.admin){ %> 
+              <span class="item admin">Admin</span>
+              <a class="dashboard" href="/admin/dashboard/users">Dashboard</a>
               <button class="item btn-message" onclick="showBoard()">Create a Message</button>
+            <% }else if(user.member){ %>
+              <span class="item member">Member</span>
+              <button class="item btn-message" onclick="showBoard()">Create a Message</button>
+            <% } %> 
               <div id="snackbar">
-                test
+                <div class="form">
+                  <form method="POST" action="/messages/post-message">
+                    <h3>Post a message</h3>
+                    <div class="input-container ic1">
+                      <input id="message-title" class="input" type="text" name="messageTitle" placeholder=" " />
+                      <div class="cut"></div>
+                      <label for="username" class="placeholder">Title</label>
+                    </div>
+                    <div class="input-container ic2">
+                      <input id="message-content" class="input" type="text" name="messageContent" placeholder=" " />
+                      <div class="cut"></div>
+                      <label for="messageContent" class="placeholder">Your message</label>
+                    </div>
+                    <p class="error"><%= error %></p>
+                    <button type="submit" class="submit">Post</button>
+                  </form> 
+                </div>
               </div>
-              <li class="item">|</li>
-              <li class="logout"><button></button><a href="/logout">Log out</a></button></li>
+            <li>|</li>
+            <% if(!user.admin){ %>
+              <li class="item title"><button></button><a href="/verify">Verify</a></button></li>
+              <li class="title"><button></button><a href="/logout">Log out</a></button></li>
+            <% }else { %>
+              <li class="item title"><button></button><a href="/logout">Log out</a></button></li>
+            <% } %>
           <% } else{ %>
-              <li class="item">🅧</li>
-              <li class="item">🅧</li>
-              <li class="item">🅧</li>
+            <li class="item">🅧</li>
+            <li class="item">🅧</li>
+            <li class="item">🅧</li>
           <% } %>
         </ul>
       </div>
       <div class="content">
-        <div>
-          <h2 class="header">WRITE FOR YOUR NEXT GENERATION</h2>
-          <p class="description">You wanna say something? Storage your message by our service, just click on the button below to start your dream</p>
+        <div class="main-site">
+          <div class="title-content">
+            <h1 class="header-content">THINK & WRITE</h1>
+            <img src="images/heartMsg.svg" alt="">
+          </div>
+          <p class="description">Storage your messages by our service, just click on the button below</p>
           <div class="wrapper">
             <div class="link_wrapper">
-              <a class="text-content" href="/messages">Join with us</a>
+              <a class="text-content" href="/messages/page/1">Join with us</a>
               <div class="icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 268.832 268.832">
                   <path d="M265.17 125.577l-80-80c-4.88-4.88-12.796-4.88-17.677 0-4.882 4.882-4.882 12.796 0 17.678l58.66 58.66H12.5c-6.903 0-12.5 5.598-12.5 12.5 0 6.903 5.597 12.5 12.5 12.5h213.654l-58.66 58.662c-4.88 4.882-4.88 12.796 0 17.678 2.44 2.44 5.64 3.66 8.84 3.66s6.398-1.22 8.84-3.66l79.997-80c4.883-4.882 4.883-12.796 0-17.678z"/>
@@ -48,13 +80,6 @@
           </div>
         </div>
       </div>
-    </div>  
-    <script>
-      function showBoard() {
-        var x = document.getElementById("snackbar");
-        x.className = "showError";
-        setTimeout(function(){ x.className = x.className.replace("showError", ""); }, 3000);  
-      }
-    </script>
+    </div> 
   </body>
 </html>

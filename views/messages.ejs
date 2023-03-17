@@ -4,40 +4,72 @@
     <title>Messages</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/index.css' />
+    <link rel="stylesheet" href='/stylesheets/form.css' />
     <link rel="stylesheet" href='/stylesheets/messages.css' />
   </head>
   <body>
+    <script>
+      function showBoard() {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+      }
+    </script>
     <div class="main"></div>
     <div class="container">
       <div class="nav-bar">
         <h3 class="title"><a href="/">Only Friends</a></h3>
         <ul class="list">
           <% if(user){ %>
-            <li class="item hello">Hi, <%= user.username %></li>
+            <li class="hello item">Hi, <%= user.username %></li>
+          <% if(user.admin){ %> 
+            <span class="item admin">Admin</span>
+            <a class="dashboard" href="/admin/dashboard/users">Dashboard</a>
+          <% }else if(user.member){ %>
+            <span class="item member">Member</span>
+          <% } %> 
             <button class="item btn-message" onclick="showBoard()">Create a Message</button>
             <div id="snackbar">
-              test
+              <% if(user.member || user.admin){ %> 
+                <div class="form">
+                  <form method="POST" action="/messages/post-message">
+                    <h3>Post a message</h3>
+                    <div class="input-container ic1">
+                      <input id="message-title" class="input" type="text" name="messageTitle" placeholder=" " />
+                      <div class="cut"></div>
+                      <label for="username" class="placeholder">Title</label>
+                    </div>
+                    <div class="input-container ic2">
+                      <input id="message-content" class="input" type="text" name="messageContent" placeholder=" " />
+                      <div class="cut"></div>
+                      <label for="messageContent" class="placeholder">Your message</label>
+                    </div>
+                    <p class="error"><%= error %></p>
+                    <button type="submit" class="submit">Post</button>
+                  </form> 
+                </div>
+              <% } else { %>
+                <section class="message error">
+                  <header></header>
+                  <i></i>
+                  <h2>
+                    <span>Error!</span> 
+                    <p>You have to be a member to post message! </p> 
+                  </h2>
+                </section> 
+              <% } %>
             </div>
-            <% if(user.member || user.member){ %>
-            <p class="item role"> <%= user.admin && user.member ? "Roles: " : "Role: " %> </p>
-            <% if(user.admin){ %> 
-                <span class="item">Admin </span>
-                <a href="/admin/dashboard">Dashboard</a>
-            <% }else if(user.member){ %>
-                <span class="item">Member </span>
+            <li>|</li>
+            <% if(!user.admin){ %>
+              <li class="item title"><button></button><a href="/verify">Verify</a></button></li>
+              <li class="title"><button></button><a href="/logout">Log out</a></button></li>
+            <% }else { %>
+              <li class="item title"><button></button><a href="/logout">Log out</a></button></li>
             <% } %>
-            <% } %>  
-            <li class="item">|</li>
-            <li class="item logout"><button></button><a href="/logout">Log out</a></button></li>
-          <% } else{ %>
-              <li class="item">🅧</li>
-              <li class="item">🅧</li>
-              <li class="item">🅧</li>
           <% } %>
         </ul>
       </div>
       <div class="content">
-        Here is your messagesss!!!!!
+        test
       </div>
     </div>  
   </body>

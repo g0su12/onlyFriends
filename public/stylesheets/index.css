@@ -1,3 +1,4 @@
+
 .container {
     background-color: #FCF4E7;
     position: absolute;
@@ -25,7 +26,7 @@
 }
 
 .title:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 
 .list {
@@ -35,7 +36,7 @@
 
 .list > .item {
     cursor: pointer;
-    padding: 0 5px;
+    padding: 3px 5px;
     margin: 0 10px;
 }
 
@@ -45,16 +46,32 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    font-weight: 300;
 }
 
-.content .header {
-    font-size: 2.5rem;
+.title-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #179AB4;
+    letter-spacing: 3px;
 }
 
-.content .description {
-    font-size: 1.3rem;
-    margin: 30px auto;
-    max-width: 500px;
+.header-content {
+    font-size: 4.5rem;
+    font-weight: 600;
+}
+
+.sub-header {
+    font-size: 1rem;
+    margin: 15px 0px 0px 0px;
+}
+
+.description {
+    font-size: 2rem;
+    max-width: 700px;
+    margin: 15px 0px 30px 0px;
+    font-style: oblique;
 }
   
 .wrapper{
@@ -146,8 +163,17 @@
 }
 
 .admin {
-    background-color: rgba(198, 100, 100, 0.694);
+    background-color: rgba(233, 69, 69, 0.722);
     border-radius: 5px;
+    padding: 5px;
+    color: #fff;
+}
+
+.member {
+    background-color: rgba(121, 193, 240, 0.821);
+    border-radius: 5px;
+    padding: 5px;
+    color: #fff;
 }
 .dashboard {
     
@@ -155,49 +181,83 @@
 
 #snackbar {
     visibility: hidden;
-    min-width: 250px;
-    margin-left: -125px;
-    background-color: #333;
     color: #fff;
     text-align: center;
     border-radius: 2px;
     padding: 16px;
     position: fixed;
     z-index: 1;
-    left: 50%;
     top: 200px;
-    font-size: 17px;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
-}
-  
-#snackbar.showError {
-    visibility: visible;
-    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
-#verify-form.showForm {
+#snackbar.show {
     visibility: visible;
 }
 
-@-webkit-keyframes fadein {
-    from {top: 150px; opacity: 0;} 
-    to {top: 200px; opacity: 1;}
-}
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,400i,700");
+@import url("https://use.fontawesome.com/releases/v5.8.1/css/all.css");
 
-@keyframes fadein {
-    from {top: 150px; opacity: 0;}
-    to {top: 200px; opacity: 1;}
+.message {
+    background: #eee;
+    box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, 0.31);
+    border-radius: 1em;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 30em;
+    margin: 2em auto;
 }
-
-@-webkit-keyframes fadeout {
-    from {top: 200px; opacity: 1;} 
-    to {top: 150px; opacity: 0;}
+.message header {
+    background: #9e9e9e;
+    width: 100%;
+    padding: 0.5em;
 }
-
-@keyframes fadeout {
-    from {top: 200px; opacity: 1;}
-    to {top: 150px; opacity: 0;}
+.message i:after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: '\f128';
+    font-style: normal;
+    color: #eee;
+    background: #353535;
+    padding: 1em 0.75em;
+    font-size: 1.25em;
+    display: block;
+    width: 2.5em;
+    height: 100%;
+    text-align: center;
+}
+.message h2 {
+    margin: 0.75em;
+    font-size: 1.25em;
+    position: relative;
+    display: block;
+    width: calc(100% - 2.5em - 1.5em);
+}
+.message h2 span {
+    color: #9e9e9e;
+}
+.message h2:after {
+    content: '';
+    border-bottom: 0.1em solid #9e9e9e;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.error header {
+    background: #d50000;
+}
+.error i:after {
+    background: #3d1d1d;
+    color: #ff5656;
+    content: "!";
+}
+.error h2 span {
+    color: #d50000;
+}
+.error h2:after {
+    border-bottom: 0.1em solid #d50000;
 }
 
 
