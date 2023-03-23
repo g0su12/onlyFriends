@@ -4,11 +4,19 @@
     <title>Dashboard</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/index.css' />
+    <link rel='stylesheet' href='/stylesheets/form.css' />
     <link rel="stylesheet" href="/stylesheets/dashboard.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
+    <script>
+      function showForm() {
+        var x = document.getElementById("snackbar");
+        x.classList.toggle("show");
+      }
+    </script>
     <div class="main"></div>
-    <div class="container">
+    <div class="containerr">
       <div class="nav-bar">
         <h3 class="title"><a href="/">Only Friends</a></h3>
           <ul class="list">
@@ -21,27 +29,60 @@
           </ul>
       </div>
       <div class="content">
-        <div>
-          <table >
+        <div class="managerTable">
+          <h2 class="header">Users management</h2>
+          <table width=100%">
+            <col style="width:15%">
+            <col style="width:20%">
+            <col style="width:20%">
+            <col style="width:20%">
+            <col style="width:15%">
+            <col style="width:15%">
+            <thead>
               <tr>
                 <th>#</th>
                 <th>Username</th>
                 <th>Join date</th>
                 <th>Role</th>
                 <th>Profile</th>
-                <th>Delete</th>
+                <th>Delete</th>  
               </tr>
+            </thead>
+            <tbody>
+              <% users.forEach((user, index) => { %>
               <tr>
-                <td>1</td>
-                <td>Jean</td>
-                <td>leBon</td>
-                <td>1368</td>
-                <td>18 Nov 1962</td>
-                <td>5000$</td>
-              </tr>
+                <td> <%= index+1 %></td>
+                <td> <%= user.username %> </td>
+                <td> <%= user.create_at_formatted %> </td>
+                <td> 
+                  <% if (!user.admin && !user.member){ %>
+                    <span class="role guest"> Guest </span>
+                  <% }else if(user.admin){ %>
+                    <span class="role admin"> Admin</span>
+                  <% }else { %>
+                    <span class="role member"> Member</span>
+                  <% } %>
+                </td>
+                <td> <a href="/users/<%- user._id %>"><i class="fa fa-user"></i></a> </td>
+                <td> 
+                  <button onclick="showForm()">Delete</button>
+                </td>
+                </tr>
+              <% }) %>
+            </tbody>
           </table>
         </div>
       </div>
-    </div>  
+    </div>
+    <div id="snackbar">
+      <div class="form-msg">
+        <h4 class="form-title">You really want to delete this user?</h4>
+        <form method="POST" action="/admin/dashboard/users/delete-user">
+          <input value="<%- user._id %>" type="hidden" name="userIdDelete" />
+          <button type="submit" class="submit">Delete</button>
+          <button type="button" class="submit" onclick="showForm()">Cancel</button>
+        </form> 
+      </div>
+    </div>
   </body>
 </html>

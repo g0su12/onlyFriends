@@ -6,6 +6,19 @@
     width: 350px;
 }
 
+.form-msg {
+    background-color: #FCF4E8;
+    border: 2px solid #333;
+    border-radius: 20px;
+    box-sizing: border-box;
+    padding: 30px;
+    width: 350px;
+}
+
+.form-title {
+    color: #333;
+}
+
 .input-container {
     height: 50px;
     position: relative;
@@ -84,13 +97,25 @@
     width: 50%;
 }
 
+.cancel {
+    background-color: rgba(218, 120, 85, 0.795);
+    border-radius: 12px;
+    color: #eee;
+    cursor: pointer;
+    font-size: 18px;
+    height: 40px;
+    margin-top: 10px;
+    text-align: center;
+    width: 50%;
+}
+
 .submit:active {
-    background-color: rgb(130, 72, 51);
+    background-color: rgb(173, 95, 67);
 }
 
 .back {
     background-color: #FCF4E8;
-    color: rgb(155, 94, 72);
+    color: rgb(235, 137, 102);
     cursor: pointer;
     font-size: 14px;
     margin-top: 20px;

@@ -1,5 +1,5 @@
 
-.container {
+.containerr {
     background-color: #FCF4E7;
     position: absolute;
     border: 5px solid black;
@@ -99,6 +99,7 @@
     letter-spacing: 1px;
     border: 3px solid #333;
     transition: all .35s;
+    cursor: pointer;
 }
 
 .icon{
@@ -188,6 +189,8 @@
     position: fixed;
     z-index: 1;
     top: 200px;
+    margin: 0 auto;
+    left: 40%;
 }
 
 #snackbar.show {

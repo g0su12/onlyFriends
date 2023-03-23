@@ -5,16 +5,24 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/index.css' />
     <link rel="stylesheet" href='/stylesheets/form.css' />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <script>
-      function showBoard() {
+      function showForm() {
         var x = document.getElementById("snackbar");
-        x.className = "show";
+        x.classList.toggle("show");
+      }
+      function showError() {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'You must be member or admin to create and see the messages!'
+        })
       }
     </script>
     <div class="main"></div>
-    <div class="container">
+    <div class="containerr">
       <div class="nav-bar">
         <h3 class="title">Only Friends</h3>
         <ul class="list">
@@ -23,30 +31,11 @@
             <% if(user.admin){ %> 
               <span class="item admin">Admin</span>
               <a class="dashboard" href="/admin/dashboard/users">Dashboard</a>
-              <button class="item btn-message" onclick="showBoard()">Create a Message</button>
+              <button class="item btn-message" onclick="showForm()">Create a Message</button>
             <% }else if(user.member){ %>
               <span class="item member">Member</span>
-              <button class="item btn-message" onclick="showBoard()">Create a Message</button>
+              <button class="item btn-message" onclick="showForm()">Create a Message</button>
             <% } %> 
-              <div id="snackbar">
-                <div class="form">
-                  <form method="POST" action="/messages/post-message">
-                    <h3>Post a message</h3>
-                    <div class="input-container ic1">
-                      <input id="message-title" class="input" type="text" name="messageTitle" placeholder=" " />
-                      <div class="cut"></div>
-                      <label for="username" class="placeholder">Title</label>
-                    </div>
-                    <div class="input-container ic2">
-                      <input id="message-content" class="input" type="text" name="messageContent" placeholder=" " />
-                      <div class="cut"></div>
-                      <label for="messageContent" class="placeholder">Your message</label>
-                    </div>
-                    <p class="error"><%= error %></p>
-                    <button type="submit" class="submit">Post</button>
-                  </form> 
-                </div>
-              </div>
             <li>|</li>
             <% if(!user.admin){ %>
               <li class="item title"><button></button><a href="/verify">Verify</a></button></li>
@@ -68,18 +57,63 @@
             <img src="images/heartMsg.svg" alt="">
           </div>
           <p class="description">Storage your messages by our service, just click on the button below</p>
-          <div class="wrapper">
-            <div class="link_wrapper">
-              <a class="text-content" href="/messages/page/1">Join with us</a>
-              <div class="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 268.832 268.832">
-                  <path d="M265.17 125.577l-80-80c-4.88-4.88-12.796-4.88-17.677 0-4.882 4.882-4.882 12.796 0 17.678l58.66 58.66H12.5c-6.903 0-12.5 5.598-12.5 12.5 0 6.903 5.597 12.5 12.5 12.5h213.654l-58.66 58.662c-4.88 4.882-4.88 12.796 0 17.678 2.44 2.44 5.64 3.66 8.84 3.66s6.398-1.22 8.84-3.66l79.997-80c4.883-4.882 4.883-12.796 0-17.678z"/>
-                </svg>
+          <% if(user){%>
+            <% if (user.member || user.admin){ %>
+              <div class="wrapper">
+                <div class="link_wrapper">
+                  <a class="text-content" href="/messages/page/1">Join with us</a>
+                  <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 268.832 268.832">
+                      <path d="M265.17 125.577l-80-80c-4.88-4.88-12.796-4.88-17.677 0-4.882 4.882-4.882 12.796 0 17.678l58.66 58.66H12.5c-6.903 0-12.5 5.598-12.5 12.5 0 6.903 5.597 12.5 12.5 12.5h213.654l-58.66 58.662c-4.88 4.882-4.88 12.796 0 17.678 2.44 2.44 5.64 3.66 8.84 3.66s6.398-1.22 8.84-3.66l79.997-80c4.883-4.882 4.883-12.796 0-17.678z"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            <% } else { %>
+              <div class="wrapper">
+                <div class="link_wrapper">
+                  <button class="text-content" onclick="showError()">Join with us</button>
+                  <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 268.832 268.832">
+                      <path d="M265.17 125.577l-80-80c-4.88-4.88-12.796-4.88-17.677 0-4.882 4.882-4.882 12.796 0 17.678l58.66 58.66H12.5c-6.903 0-12.5 5.598-12.5 12.5 0 6.903 5.597 12.5 12.5 12.5h213.654l-58.66 58.662c-4.88 4.882-4.88 12.796 0 17.678 2.44 2.44 5.64 3.66 8.84 3.66s6.398-1.22 8.84-3.66l79.997-80c4.883-4.882 4.883-12.796 0-17.678z"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+          <% }else{ %>
+            <div class="wrapper">
+              <div class="link_wrapper">
+                <a class="text-content" href="/messages/page/1">Join with us</a>
+                <div class="icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 268.832 268.832">
+                    <path d="M265.17 125.577l-80-80c-4.88-4.88-12.796-4.88-17.677 0-4.882 4.882-4.882 12.796 0 17.678l58.66 58.66H12.5c-6.903 0-12.5 5.598-12.5 12.5 0 6.903 5.597 12.5 12.5 12.5h213.654l-58.66 58.662c-4.88 4.882-4.88 12.796 0 17.678 2.44 2.44 5.64 3.66 8.84 3.66s6.398-1.22 8.84-3.66l79.997-80c4.883-4.882 4.883-12.796 0-17.678z"/>
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
+          <% } %>
         </div>
       </div>
-    </div> 
+      <div id="snackbar">
+        <div class="form-msg">
+          <form method="POST" action="/messages/post-message">
+            <h3 class="form-title">Post a message</h3>
+            <div class="input-container ic1">
+              <input id="message-title" class="input" type="text" name="messageTitle" placeholder=" " />
+              <div class="cut"></div>
+              <label for="messageTitle" class="placeholder">Title</label>
+            </div>
+            <div class="input-container ic2">
+              <input id="message-content" class="input" type="text" name="messageContent" placeholder=" " />
+              <div class="cut"></div>
+              <label for="messageContent" class="placeholder">Your message</label>
+            </div>
+            <button type="submit" class="submit">Post</button>
+            <button class="cancel" type="button" onclick="showForm()">Cancel</button>
+          </form> 
+        </div>
+      </div>
+    </div>
   </body>
 </html>

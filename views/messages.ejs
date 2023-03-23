@@ -6,58 +6,48 @@
     <link rel='stylesheet' href='/stylesheets/index.css' />
     <link rel="stylesheet" href='/stylesheets/form.css' />
     <link rel="stylesheet" href='/stylesheets/messages.css' />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <script>
-      function showBoard() {
+      function showForm() {
         var x = document.getElementById("snackbar");
-        x.className = "show";
+        x.classList.toggle("show");
+      }
+      function showError() {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'You must be member to create a message!',
+          footer: '<a href="/verify/member">Become a member</a>'
+        })
+      }
+      function showErrorBack() {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Out of messages range!',
+        })
       }
     </script>
     <div class="main"></div>
-    <div class="container">
+    <div class="containerr">
       <div class="nav-bar">
         <h3 class="title"><a href="/">Only Friends</a></h3>
         <ul class="list">
           <% if(user){ %>
             <li class="hello item">Hi, <%= user.username %></li>
-          <% if(user.admin){ %> 
-            <span class="item admin">Admin</span>
-            <a class="dashboard" href="/admin/dashboard/users">Dashboard</a>
-          <% }else if(user.member){ %>
-            <span class="item member">Member</span>
-          <% } %> 
-            <button class="item btn-message" onclick="showBoard()">Create a Message</button>
-            <div id="snackbar">
-              <% if(user.member || user.admin){ %> 
-                <div class="form">
-                  <form method="POST" action="/messages/post-message">
-                    <h3>Post a message</h3>
-                    <div class="input-container ic1">
-                      <input id="message-title" class="input" type="text" name="messageTitle" placeholder=" " />
-                      <div class="cut"></div>
-                      <label for="username" class="placeholder">Title</label>
-                    </div>
-                    <div class="input-container ic2">
-                      <input id="message-content" class="input" type="text" name="messageContent" placeholder=" " />
-                      <div class="cut"></div>
-                      <label for="messageContent" class="placeholder">Your message</label>
-                    </div>
-                    <p class="error"><%= error %></p>
-                    <button type="submit" class="submit">Post</button>
-                  </form> 
-                </div>
-              <% } else { %>
-                <section class="message error">
-                  <header></header>
-                  <i></i>
-                  <h2>
-                    <span>Error!</span> 
-                    <p>You have to be a member to post message! </p> 
-                  </h2>
-                </section> 
-              <% } %>
-            </div>
+            <% if(user.admin){ %> 
+              <span class="item admin">Admin</span>
+              <a class="dashboard" href="/admin/dashboard/users">Dashboard</a>
+            <% }else if(user.member){ %>
+              <span class="item member">Member</span>
+            <% } %>
+            <% if(user.admin || user.member){ %>
+              <button class="item btn-message" onclick="showForm()">Create a Message</button>
+            <% }else {%>
+              <button class="item btn-message" onclick="showError()">Create a Message</button>
+            <% } %>
             <li>|</li>
             <% if(!user.admin){ %>
               <li class="item title"><button></button><a href="/verify">Verify</a></button></li>
@@ -69,7 +59,68 @@
         </ul>
       </div>
       <div class="content">
-        test
+        <div class="row">
+          <% for (var i = 0; i < messages.length; i++) { %>
+              <div class="box-msg">
+                  <div class="nav-msg">
+                    <h3><%= messages[i].title %></h3>
+                    <p>Created with &#10084; by &nbsp;<%= messages[i].user.username %></p>
+                  </div>
+                  <div class="msg">
+                    <p><%= messages[i].message %></p>
+                  </div>
+              </div>
+          <% } %>
+        </div>
+        <% if (pages > 0) { %>
+          <ul class="pagination">
+            <% if (currentPage > 1) { %>
+              <li><a href="/messages/page/<%= Number(currentPage) - 1 %>"><<</a></li>
+            <% } else { %>
+              <li><a href="#" onclick="showErrorBack()"><<</a></li>
+            <% } %>
+            <% var i = (Number(currentPage) > 3 ? Number(currentPage) - 2 : 1) %>
+            <% if (i != 1) { %>
+                <li class="disabled"><a>...</a></li>
+            <% } %>
+            <% for (; i <= (Number(currentPage) + 3) && i <= pages; i++) { %>
+                <% if (i == currentPage) { %>
+                    <li class="active"><a><%= i %></a></li>
+                <% } else { %>
+                    <li><a href="/messages/page/<%= i %>"><%= i %></a></li>
+                <% } %>
+                <% if (i == Number(currentPage) + 3 && i < pages) { %>
+                    <li class="disabled"><a>...</a></li>
+                <% } %>
+            <% } %>
+            <% console.log(currentPage) %>
+            <% if (currentPage < pages) { %>
+              <li><a href="/messages/page/<%= Number(currentPage) + 1 %>">>></a></li>
+            <% } else { %>
+              <% currentPage = pages %>
+              <li><a href="#" onclick="showErrorBack()">>></a></li>
+            <% } %>
+          </ul>
+        <% } %>
+      </div>
+    </div>
+    <div id="snackbar">
+      <div class="form-msg">
+        <form method="POST" action="/messages/post-message">
+          <h3 class="form-title">Post a message</h3>
+          <div class="input-container ic1">
+            <input id="message-title" class="input" type="text" name="messageTitle" placeholder=" " />
+            <div class="cut"></div>
+            <label for="messageTitle" class="placeholder">Title</label>
+          </div>
+          <div class="input-container ic2">
+            <input id="message-content" class="input" type="text" name="messageContent" placeholder=" " />
+            <div class="cut"></div>
+            <label for="messageContent" class="placeholder">Your message</label>
+          </div>
+          <button type="submit" class="submit">Post</button>
+          <button class="cancel" type="button" onclick="showForm()">Cancel</button>
+        </form> 
       </div>
     </div>  
   </body>

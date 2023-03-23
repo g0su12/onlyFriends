@@ -20,13 +20,13 @@ router.post('/post-message', isLoggedIn, (req, res, next) => {
   });
 });
 
-router.get('/page/:page?', isLoggedIn, async (req, res, next) => {
+router.get('/page/:page?', isLoggedIn, (req, res, next) => {
   try {
-    // Get 10 posts per page
+    // Get 5 posts per page
     const perPage = 5;
     const page = req.params.page || 1;
 
-    const firstPageMessages = await Message.find()
+    Message.find()
       .sort({ post_date: 'descending' })
       .skip((perPage * page) - perPage)
       .limit(perPage)
@@ -36,9 +36,8 @@ router.get('/page/:page?', isLoggedIn, async (req, res, next) => {
         // Count the messages
         Message.countDocuments((err, count) => {
           if (err) return next(err);
-
           res.render('messages', {
-            currentUser: res.locals.currentUser,
+            user: res.locals.currentUser,
             messages,
             currentPage: page,
             pages: Math.ceil(count / perPage),

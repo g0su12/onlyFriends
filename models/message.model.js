@@ -25,7 +25,7 @@ messageSchema
 messageSchema
   .virtual('post_date_time')
   .get(function () {
-    if (this.post_date.toLocaleString('en-CA').length == 25) {
+    if (this.post_date.toLocaleString('en-CA').length === 25) {
       const hour = this.post_date.toLocaleString('en-CA').slice(11, 17);
       const ampm = this.post_date.toLocaleString('en-CA').slice(20, 24);
       return `${hour} ${ampm}`;
