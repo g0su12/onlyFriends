@@ -26,7 +26,7 @@ router.get('/page/:page?', isLoggedIn, (req, res, next) => {
     const perPage = 5;
     const page = req.params.page || 1;
 
-    Message.find()
+    const messages = Message.find()
       .sort({ post_date: 'descending' })
       .skip((perPage * page) - perPage)
       .limit(perPage)
@@ -37,12 +37,61 @@ router.get('/page/:page?', isLoggedIn, (req, res, next) => {
         Message.countDocuments((err, count) => {
           if (err) return next(err);
           res.render('messages', {
-            user: res.locals.currentUser,
+            currentUser: res.locals.currentUser,
             messages,
             currentPage: page,
             pages: Math.ceil(count / perPage),
           });
         });
+      });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.post('/add-reaction', async (req, res, next) => {
+  try {
+    await Message.findOne({ _id: req.body.msgID })
+      .populate('reactions')
+      .exec((err, msg) => {
+        if (err) return next(err);
+
+        if (!msg.reactions.some((user) => user._id.equals(req.user._id))) {
+          Message.findOneAndUpdate(
+            { _id: req.body.msgID },
+            { $push: { reactions: req.user } },
+          ).exec((err, newMsg) => {
+            if (err) return next(err);
+            res.status(200).send(newMsg);
+          });
+        } else {
+          res.status(400).send(msg);
+        }
+      });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.post('/remove-reaction', async (req, res, next) => {
+  try {
+    await Message.findOne({ _id: req.body.msgID })
+      .populate('reactions')
+      .exec((err, msg) => {
+        if (err) return next(err);
+
+        if (msg.reactions.some((user) => user._id.equals(req.user._id))) {
+          Message.findOneAndUpdate(
+            { _id: req.body.msgID },
+            { $pull: { reactions: req.user._id } },
+            { multi: true },
+          ).exec((err, newMsg) => {
+            if (err) return next(err);
+            res.status(200).send(newMsg);
+          });
+        } else {
+          res.status(200).send(msg);
+        }
       });
   } catch (err) {
     console.error(err);

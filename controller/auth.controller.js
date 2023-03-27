@@ -2,6 +2,7 @@
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const Swal = require('sweetalert2');
 
 const User = require('../models/user.model');
 
@@ -77,6 +78,48 @@ const signUpPost = [
   },
 ];
 
+const changePwPost = (req, res, next) => {
+  const { currentPassword, newPassword, confirmNewPassword } = req.body;
+  const user = res.locals.currentUser;
+  if (!currentPassword || !newPassword || !confirmNewPassword) {
+    return res.render('change-pw', {
+      user,
+      error: 'All fields are required!',
+    });
+  }
+
+  if (newPassword !== confirmNewPassword) {
+    return res.render('change-pw', {
+      user,
+      error: 'New password and confirm password do not match!',
+    });
+  }
+
+  bcrypt.compare(currentPassword, req.user.password, (err, result) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (!result) {
+      return res.render('change-pw', {
+        user,
+        error: 'Current password is incorrect!',
+      });
+    }
+
+    bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+      if (err) {
+        return next(err);
+      }
+
+      User.findByIdAndUpdate(res.locals.currentUser._id, { $set: { password: hashedPassword } }, {}, (err, _updatedUser) => {
+        if (err) return next(err);
+        res.redirect('/');
+      });
+    });
+  });
+};
+
 const isLoggedIn = (req, res, next) => {
   if (req.user) {
     return next();
@@ -131,6 +174,7 @@ module.exports = {
   loginPost,
   signUpGet,
   signUpPost,
+  changePwPost,
   isLoggedIn,
   isLogged,
   logOut,

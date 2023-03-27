@@ -14,7 +14,7 @@ table {
     border-spacing: 0;
     box-shadow: 0 2px 15px rgba(64,64,64,.7);
     border-radius: 12px;
-    height: 500px;
+    max-height: 55vh;
     display: block;
     overflow-y: scroll;
 }
@@ -57,6 +57,11 @@ tr{
     font-family: 'Montserrat', sans-serif;
 }
 
+tr{
+    background-color: #fafafa;
+    font-family: 'Montserrat', sans-serif;
+}
+
 tr:hover{
     background-color: #eeeeee;
 }
@@ -77,3 +82,12 @@ tr:hover{
 .role.member {
     background-color: #568fde;
 }
+
+.delete {
+    padding: 10px;
+    background-color: rgb(235, 82, 82);
+    color: #fff;
+    cursor: pointer;
+    border-radius: 15px;
+}
+

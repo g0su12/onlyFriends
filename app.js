@@ -1,5 +1,3 @@
-/* eslint-disable consistent-return */
-/* eslint-disable import/order */
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
@@ -8,7 +6,6 @@ const logger = require('morgan');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
-// eslint-disable-next-line import/no-extraneous-dependencies
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 
@@ -19,6 +16,7 @@ const logOutRouter = require('./routes/logout');
 const verifyRouter = require('./routes/verify');
 const adminRouter = require('./routes/admin');
 const messagesRouter = require('./routes/messages');
+const userRouter = require('./routes/user');
 
 const app = express();
 
@@ -86,6 +84,7 @@ app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/signup', signUpRouter);
 app.use('/logout', logOutRouter);
+app.use('/user', userRouter);
 app.use('/verify', verifyRouter);
 app.use('/admin', adminRouter);
 app.use('/messages', messagesRouter);

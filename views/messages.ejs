@@ -10,6 +10,68 @@
   </head>
   <body>
     <script>
+      function unlikePost(unlikeBnt) {
+        const msgId = unlikeBnt.getAttribute('data-msg-id');
+
+        // Exchange status
+        unlikeBnt.style.display = 'none';
+        unlikeBnt.nextElementSibling.style.display = 'inline-block';
+        console.log('Unlike Button clicked!');
+
+        // Update date like count html
+        const likeCountId = `lc${msgId}`;
+        const likeNode = document.getElementById(likeCountId);
+        const like = Number(likeNode.textContent.trim().split(" ")[0]);
+        console.log(likeCountId, likeNode, like);
+        likeNode.innerText = like > 2 ? `${Number(like - 1)} likes` : `${Number(like - 1)} like`;
+
+        // Update db
+        const url = '/messages/remove-reaction';
+        const data = {
+          msgID: msgId,
+        };
+
+        fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then((res) => res.json())
+          .then((response) => console.log('Success:', JSON.stringify(response)))
+          .catch((error) => console.error('Error: ', error));
+      }
+
+      function likePost(likeBtn) {
+        const msgId = likeBtn.getAttribute('data-msg-id');
+        // Exchange status
+        likeBtn.style.display = 'none';
+        likeBtn.previousElementSibling.style.display = 'inline-block';
+        console.log('Like Button clicked!');
+
+        // Update date like count html
+        const likeCountId = `lc${msgId}`;
+        const likeNode = document.getElementById(likeCountId);
+        const like = Number(likeNode.textContent.trim().split(" ")[0]);
+        likeNode.innerText = like > 1 ? `${Number(like + 1)} likes` : `${Number(like + 1)} like`;
+
+        // Update db
+        const url = '/messages/add-reaction';
+        const data = {
+          msgID: msgId,
+        };
+
+        fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then((res) => res.json())
+          .then((response) => console.log('Success:', JSON.stringify(response)))
+          .catch((error) => console.error('Error:', error));
+      }
+
       function showForm() {
         var x = document.getElementById("snackbar");
         x.classList.toggle("show");
@@ -31,30 +93,38 @@
       }
     </script>
     <div class="main"></div>
-    <div class="containerr">
+    <div class="container">
       <div class="nav-bar">
         <h3 class="title"><a href="/">Only Friends</a></h3>
         <ul class="list">
-          <% if(user){ %>
-            <li class="hello item">Hi, <%= user.username %></li>
-            <% if(user.admin){ %> 
+          <% if(currentUser){ %>
+            <li class="hello item">Hi, <%= currentUser.username %></li>
+            <% if(currentUser.admin){ %> 
               <span class="item admin">Admin</span>
               <a class="dashboard" href="/admin/dashboard/users">Dashboard</a>
-            <% }else if(user.member){ %>
+            <% }else if(currentUser.member){ %>
               <span class="item member">Member</span>
             <% } %>
-            <% if(user.admin || user.member){ %>
+            <% if(currentUser.admin || currentUser.member){ %>
               <button class="item btn-message" onclick="showForm()">Create a Message</button>
             <% }else {%>
               <button class="item btn-message" onclick="showError()">Create a Message</button>
             <% } %>
             <li>|</li>
-            <% if(!user.admin){ %>
-              <li class="item title"><button></button><a href="/verify">Verify</a></button></li>
-              <li class="title"><button></button><a href="/logout">Log out</a></button></li>
-            <% }else { %>
-              <li class="item title"><button></button><a href="/logout">Log out</a></button></li>
-            <% } %>
+            <li class="item">
+              <nav class="btn-pluss-wrapper">
+                <div href="#" class="btn-pluss">
+                 <ul>
+                    <li><a href="/user/profile/<%= currentUser._id %>">Profile</a></li>
+                    <% if (!currentUser.admin) { %>
+                      <li><a href="/verify">Verify member</a></li>
+                    <% } %>
+                    <li><a href="/user/change-password">Change password</a></li>
+                    <li><a href="/logout">Log out</a></li>
+                 </ul>
+                </div>
+               </nav>
+            </li>
           <% } %>
         </ul>
       </div>
@@ -68,6 +138,28 @@
                   </div>
                   <div class="msg">
                     <p><%= messages[i].message %></p>
+                  </div>
+                  <div>
+                    <p class="reaction">
+                      <div class="like-number">
+                        <p id="lc<%= messages[i]._id %>"><%= messages[i].reaction_count %> <%= messages[i].reaction_count > 1 ? "likes" : "like"%></p>
+                      </div>
+                      <% if (messages[i].reactions.some((user) => user._id.equals(currentUser._id))) { %>
+                        <svg class="unlike" aria-label="Unlike" onclick="unlikePost(this)" data-msg-id="<%= messages[i]._id %>" viewBox="0 0 48 48">
+                          <path d="M34.6 3.1c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5s1.1-.2 1.6-.5c1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path>
+                        </svg>
+                        <svg class="like hidden" aria-label="Like" onclick="likePost(this)" data-msg-id="<%= messages[i]._id %>" viewBox="0 0 48 48">
+                          <path d="M34.6 6.1c5.7 0 10.4 5.2 10.4 11.5 0 6.8-5.9 11-11.5 16S25 41.3 24 41.9c-1.1-.7-4.7-4-9.5-8.3-5.7-5-11.5-9.2-11.5-16C3 11.3 7.7 6.1 13.4 6.1c4.2 0 6.5 2 8.1 4.3 1.9 2.6 2.2 3.9 2.5 3.9.3 0 .6-1.3 2.5-3.9 1.6-2.3 3.9-4.3 8.1-4.3m0-3c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5.6 0 1.1-.2 1.6-.5 1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path>
+                        </svg>
+                      <% }else{ %>
+                        <svg class="unlike hidden" aria-label="Unlike" onclick="unlikePost(this)" data-msg-id="<%= messages[i]._id %>" viewBox="0 0 48 48">
+                          <path d="M34.6 3.1c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5s1.1-.2 1.6-.5c1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path>
+                        </svg>
+                        <svg class="like" aria-label="Like" onclick="likePost(this)" data-msg-id="<%= messages[i]._id %>" viewBox="0 0 48 48">
+                          <path d="M34.6 6.1c5.7 0 10.4 5.2 10.4 11.5 0 6.8-5.9 11-11.5 16S25 41.3 24 41.9c-1.1-.7-4.7-4-9.5-8.3-5.7-5-11.5-9.2-11.5-16C3 11.3 7.7 6.1 13.4 6.1c4.2 0 6.5 2 8.1 4.3 1.9 2.6 2.2 3.9 2.5 3.9.3 0 .6-1.3 2.5-3.9 1.6-2.3 3.9-4.3 8.1-4.3m0-3c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5.6 0 1.1-.2 1.6-.5 1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path>
+                        </svg>
+                      <% } %>
+                    </p> 
                   </div>
               </div>
           <% } %>
@@ -104,7 +196,7 @@
         <% } %>
       </div>
     </div>
-    <div id="snackbar">
+    <div class="toggle" id="snackbar">
       <div class="form-msg">
         <form method="POST" action="/messages/post-message">
           <h3 class="form-title">Post a message</h3>

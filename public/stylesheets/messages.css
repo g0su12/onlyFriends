@@ -6,7 +6,7 @@
 
 .row {
     display: flex;
-    height: 50vh;
+    height: 60vh;
     flex-direction: column;
     align-items: center;
     max-height: 100%;
@@ -22,6 +22,7 @@
 .box-msg {
     width: 700px;
     border: 3px solid #333;
+    border-radius: 15px;
 }
 
 .nav-msg {
@@ -29,19 +30,47 @@
     align-items: center;
     padding: 10px;
     justify-content: space-around;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
     color: #fff;
     background-color: #9d8f8f;
 }
 
 .msg {
-    max-width: 60%;
-    min-height: 80px;
-    overflow: auto;
+    padding: 20px 40px;
+}
+
+.reaction {
+    font-size: 1.4rem;
+}
+
+.unlike {
+    width: 1.4rem !important;
+    fill: #ed4956 !important;
+    color: #ed4956 !important;
+    cursor: pointer;
+    transition: .05s ease-in;
+}
+  
+.hidden {
+    display: none;
+}
+  
+.like {
+    width: 1.4rem !important;
+    fill: #484c50 !important;
+    cursor: pointer;
+    transition: .05s ease-in;
+    
+}
+  
+.like:hover, .share:hover {
+    fill: #7c7c7c !important;
 }
 
 .pagination {
     display: inline;
-    margin-top: 100px;
+    margin-top: 25px;
 }
 
 .pagination>li {
@@ -52,5 +81,6 @@
 }
 
 .active {
-    background-color: aqua;
+    background-color: #367ac8 !important;
+    cursor: pointer;
 }
