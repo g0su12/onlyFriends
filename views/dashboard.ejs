@@ -6,6 +6,7 @@
     <link rel='stylesheet' href='/stylesheets/index.css' />
     <link rel='stylesheet' href='/stylesheets/form.css' />
     <link rel="stylesheet" href="/stylesheets/dashboard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
@@ -13,6 +14,13 @@
       function showForm(index) {
         var x = document.getElementById(`snackbar-${index}`);
         x.classList.toggle("show");
+      }
+      function showError() {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Can\'t delete an Admin!',
+        })
       }
     </script>
     <div class="main"></div>
@@ -78,7 +86,11 @@
                   </td>
                   <td> <a href="/user/profile/<%= user._id %>"><i class="fa fa-user"></i></a> </td>
                   <td> 
-                    <button class="delete" onclick="showForm(<%= index+1 %>)">Delete</button>
+                    <% if (user.admin) { %>
+                      <button class="delete" onclick="showError()">Delete</button>
+                    <% } else {%>
+                      <button class="delete" onclick="showForm(<%= index+1 %>)">Delete</button>
+                    <% } %>
                     <div class="toggle" id="snackbar-<%= index+1 %>">
                       <div class="form-msg">
                         <h4 class="form-title">This user will be permanently deleted</h4>
@@ -94,6 +106,7 @@
               <% }) %>
             </tbody>
           </table>
+          <h5> <%= error%></h5>
         </div>
       </div>
     </div>

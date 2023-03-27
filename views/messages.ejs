@@ -12,17 +12,13 @@
     <script>
       function unlikePost(unlikeBnt) {
         const msgId = unlikeBnt.getAttribute('data-msg-id');
-
         // Exchange status
         unlikeBnt.style.display = 'none';
         unlikeBnt.nextElementSibling.style.display = 'inline-block';
-        console.log('Unlike Button clicked!');
-
         // Update date like count html
         const likeCountId = `lc${msgId}`;
         const likeNode = document.getElementById(likeCountId);
         const like = Number(likeNode.textContent.trim().split(" ")[0]);
-        console.log(likeCountId, likeNode, like);
         likeNode.innerText = like > 2 ? `${Number(like - 1)} likes` : `${Number(like - 1)} like`;
 
         // Update db
@@ -38,17 +34,13 @@
             'Content-Type': 'application/json',
           },
         }).then((res) => res.json())
-          .then((response) => console.log('Success:', JSON.stringify(response)))
           .catch((error) => console.error('Error: ', error));
       }
-
       function likePost(likeBtn) {
         const msgId = likeBtn.getAttribute('data-msg-id');
         // Exchange status
         likeBtn.style.display = 'none';
         likeBtn.previousElementSibling.style.display = 'inline-block';
-        console.log('Like Button clicked!');
-
         // Update date like count html
         const likeCountId = `lc${msgId}`;
         const likeNode = document.getElementById(likeCountId);
@@ -68,7 +60,6 @@
             'Content-Type': 'application/json',
           },
         }).then((res) => res.json())
-          .then((response) => console.log('Success:', JSON.stringify(response)))
           .catch((error) => console.error('Error:', error));
       }
 
